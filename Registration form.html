@@ -1,0 +1,180 @@
+<html>
+<head>
+    <base href="https://form-validation-example.com/">
+    <title>Form Validation Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(45deg, #f3f4f6, #dbeafe);
+        }
+        .form-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        h2 {
+            text-align: center;
+            color: #3b82f6;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #4b5563;
+        }
+        input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+        }
+        .error {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+        button {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2563eb;
+        }
+        .success-message {
+            text-align: center;
+            color: #10b981;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+        .reset-button {
+            background-color: #6b7280;
+        }
+        .reset-button:hover {
+            background-color: #4b5563;
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <h2>Registration Form</h2>
+    <form id="registrationForm">
+        <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" name="fullName" required>
+            <div class="error" id="fullNameError"></div>
+        </div>
+        <div class="form-group">
+            <label for="email">Email ID</label>
+            <input type="email" id="email" name="email" required>
+            <div class="error" id="emailError"></div>
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" required>
+            <div class="error" id="phoneError"></div>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+            <div class="error" id="passwordError"></div>
+        </div>
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+            <div class="error" id="confirmPasswordError"></div>
+        </div>
+        <div class="button-group">
+            <button type="submit">Register</button>
+            <button type="reset" class="reset-button">Reset</button>
+        </div>
+    </form>
+    <div class="success-message" id="successMessage"></div>
+</div>
+
+<script>
+document.getElementById('registrationForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Reset error messages
+    document.querySelectorAll('.error').forEach(el => el.textContent = '');
+    document.getElementById('successMessage').textContent = '';
+
+    // Get form values
+    const fullName = document.getElementById('fullName').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+
+    let isValid = true;
+
+    // Validate Full Name
+    if (fullName.length < 5) {
+        document.getElementById('fullNameError').textContent = 'Name must be at least 5 characters long.';
+        isValid = false;
+    }
+
+    // Validate Email
+    if (!email.includes('@')) {
+        document.getElementById('emailError').textContent = 'Enter a valid email address.';
+        isValid = false;
+    }
+
+    // Validate Phone Number
+    if (phone === '123456789' || phone.length !== 10 || !/^\d+$/.test(phone)) {
+        document.getElementById('phoneError').textContent = 'Enter a valid 10-digit phone number.';
+        isValid = false;
+    }
+
+    // Validate Password
+    if (password.toLowerCase() === 'password' || 
+        password.toLowerCase() === fullName.toLowerCase() || 
+        password.length < 8) {
+        document.getElementById('passwordError').textContent = 'Password is not strong enough.';
+        isValid = false;
+    }
+
+    // Confirm Password
+    if (password !== confirmPassword) {
+        document.getElementById('confirmPasswordError').textContent = 'Passwords do not match.';
+        isValid = false;
+    }
+
+    // If all validations pass
+    if (isValid) {
+        document.getElementById('successMessage').textContent = 'Registration successful!';
+        this.reset(); // Reset the form
+    }
+});
+</script>
+</body>
+</html>
+
